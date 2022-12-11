@@ -1,64 +1,76 @@
-package window;
+// package window;
 
-import java.io.IOException;
+// import java.io.IOException;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import assets.*;
+// import javax.swing.*;
+// import javax.swing.JFrame;
+// import java.awt.Color;
+// import java.awt.FlowLayout;
+// import assets.*;
 
-import window.*;
-import listener.*;
+// import window.*;
+// import listener.*;
 
-public class Fenetre extends JFrame {
-    Feuille feuille;
-    // Clic clic;
-    JButton actualiser;
-    int id;
+// public class Fenetre extends JFrame {
+//     JPanel actuPanel;
+//     Feuille feuille;
+//     MyMenu Mymenu;
+//     int id;
 
-    public Fenetre() throws IOException {
-        actualiser = new JButton("actualiser");
-        // this.add(actualiser);
-        // actualiser.addActionListener(new Act(this));
+//     public Fenetre() throws IOException {
+//         Click click = new Click(this);
+//         Mymenu = new MyMenu();
+//         Mymenu.getHost_btn().addActionListener(click);
+//         feuille = new Feuille();
+//         setFeuille(feuille);
+//         setActuPanel(Mymenu);
+//         this.add(getActuPanel());
 
-        actualiser.setFocusable(false);
-        feuille = new Feuille();
-        setFeuille(feuille);
-        this.setLayout(new FlowLayout());
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.add(feuille);
-        this.pack();
-        this.setLocationRelativeTo(null);
-        this.setResizable(false);
-        this.setVisible(true);
-        // Clic clic = new Clic(this);
-        // this.addMouseListener(clic);
-        this.setFocusable(true);
-        // this.addMouseListener(new Clic(this));
-    }
+//         this.setLayout(new FlowLayout());
+//         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//         this.pack();
+//         this.setLocationRelativeTo(null);
+//         this.setResizable(false);
+//         this.setVisible(true);
 
-    public void setFeuille(Feuille feuille) {
-        this.feuille = feuille;
-    }
-public void setId(int id) {
-    this.id = id;
-}
-public int getId() {
-    return id;
-}
-    // public void setClic(Clic clic) {
-    //     this.clic = clic;
-    // }
+//         this.setFocusable(true);
+//     }
 
-    // public Clic getClic() {
-    //     return clic;
-    // }
+//     public void refresh(JPanel next) {
+//         this.remove(actuPanel);
+//         setActuPanel(next);
+//         this.add(actuPanel);
+//         this.revalidate();
+//         this.repaint();
 
-    public Feuille getFeuille() {
-        return feuille;
-    }
-    public JButton getActualiser() {
-        return actualiser;
-    }
-}
+//     }
+
+//     public void setActuPanel(JPanel actuPanel) {
+//         this.actuPanel = actuPanel;
+//     }
+
+//     public JPanel getActuPanel() {
+//         return actuPanel;
+//     }
+
+//     public MyMenu getMyMenu() {
+//         return Mymenu;
+//     }
+
+//     public void setFeuille(Feuille feuille) {
+//         this.feuille = feuille;
+//     }
+
+//     public void setId(int id) {
+//         this.id = id;
+//     }
+
+//     public int getId() {
+//         return id;
+//     }
+
+//     public Feuille getFeuille() {
+//         return feuille;
+//     }
+
+// }

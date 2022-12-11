@@ -2,27 +2,67 @@ package assets;
 
 import java.net.*;
 import java.io.*;
-
+import javax.swing.*;
 import assets.Point;
-import listener.Clic;
+import listener.*;
 import window.*;
 import java.awt.*;
 
-public class Joueur implements Serializable {
-    Fenetre fenetre;
+public class Joueur extends JFrame implements Serializable {
+    JPanel actuPanel;
     Feuille feuille;
+    MyMenu menu;
     boolean tour;
     int score = 0;
     String nom;
     int id;
     Color pointColor;
     boolean turn;
+    boolean run;
 
     ClientSideConnection csc;
 
     public Joueur(String nom) {
         setNom(nom);
+        Click click = new Click(this);
+        menu = new MyMenu();
+        menu.getHost_btn().addActionListener(click);
+        menu.getJoin_btn().addActionListener(click);
+        feuille = new Feuille();
+        setFeuille(feuille);
+        setActuPanel(menu);
+        this.add(getActuPanel());
 
+        this.setLayout(new FlowLayout());
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setVisible(true);
+
+        this.setFocusable(true);
+
+    }
+
+    public void refresh(JPanel next) {
+        this.remove(actuPanel);
+        setActuPanel(next);
+        this.add(actuPanel);
+        this.revalidate();
+        this.repaint();
+
+    }
+
+    public void setActuPanel(JPanel actuPanel) {
+        this.actuPanel = actuPanel;
+    }
+
+    public JPanel getActuPanel() {
+        return actuPanel;
+    }
+
+    public MyMenu getMenu() {
+        return menu;
     }
 
     public void start() {
@@ -40,7 +80,6 @@ public class Joueur implements Serializable {
             public void run() {
                 csc.sendCoord(point);
                 setTurn(false);
-
             }
         });
         t.start();
@@ -49,14 +88,28 @@ public class Joueur implements Serializable {
     }
 
     // -----------------------------
-    public void connectToServer() throws Exception {
+    public void connectToServer(String host, int port) throws Exception {
+        csc = new ClientSideConnection(host, port);
+        try {
+            this.start();
+        } catch (Exception e) {
+            // p.getCsc().closeConnection();
+            // p.run = false;
+            System.out.println("tsy mety connecte");
+        }
+        if (this.getId() == 1) {
+            this.setTurn(true);
+        }
+        this.setTitle("Player " + this.getId());
 
-        csc = new ClientSideConnection();
+        run = true;
     }
 
     public void updateTurn() {
         while (true) {
             Point point = (Point) csc.receiveCoord();
+            setTurn(true);
+
             // if (id == 1)
             // point.setColor(Color.blue);
             // if (id == 2)
@@ -66,9 +119,9 @@ public class Joueur implements Serializable {
             // System.out.println("your enemy clicked" + point.getX() + "-" + point.getY());
             Thread t = new Thread(new Runnable() {
                 public void run() {
-                    fenetre.getFeuille().drop(point);
-            setTurn(true);
-
+                    System.out.println(getId());
+                    getFeuille().drop(point);
+                    setTurn(true);
                 }
             });
             t.start();
@@ -85,10 +138,10 @@ public class Joueur implements Serializable {
         ObjectOutputStream oos;
         ObjectInputStream ois;
 
-        public ClientSideConnection() throws Exception {
+        public ClientSideConnection(String host, int port) throws Exception {
             System.out.println("----Client----");
             try {
-                socket = new Socket("localhost", 1948);
+                socket = new Socket(host, port);
                 dataIn = new DataInputStream(socket.getInputStream());
                 dataOut = new DataOutputStream(socket.getOutputStream());
                 oos = new ObjectOutputStream(socket.getOutputStream());
@@ -107,7 +160,7 @@ public class Joueur implements Serializable {
             try {
                 // dataOut.write(coord);
                 // dataOut.flush();
-                
+
                 oos.writeObject(point);
                 oos.flush();
             } catch (Exception e) {
@@ -140,21 +193,17 @@ public class Joueur implements Serializable {
 
         }
 
+        public Socket getSocket() {
+            return socket;
+        }
+        
     }
     // ________________________________
 
-    public void newFeuille() {
-        try {
-            fenetre = new Fenetre();
-            fenetre.getFeuille().setProprio(this);
-            fenetre.addMouseListener(new Clic(fenetre));
-            fenetre.setTitle("Player " + getId());
-            fenetre.setId(getId());
-            fenetre.getFeuille().setId(getId());
-            // setFeuille(feuille);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+    public static void main(String[] args) throws Exception {
+        Joueur p = new Joueur("faly");
+        p.addMouseListener(new Clic(p));
+
     }
 
     public void drop(int x, int y) {
@@ -188,10 +237,6 @@ public class Joueur implements Serializable {
 
     public void setPointColor(Color pointColor) {
         this.pointColor = pointColor;
-    }
-
-    public void setFenetre(Fenetre fenetre) {
-        this.fenetre = fenetre;
     }
 
     public void setTurn(boolean turn) {
@@ -228,34 +273,6 @@ public class Joueur implements Serializable {
 
     public Color getPointColor() {
         return pointColor;
-    }
-
-    public Fenetre getFenetre() {
-        return fenetre;
-    }
-
-    public static void main(String[] args) throws Exception {
-        // Player p = new Player(500, 100);
-        Joueur p = new Joueur("faly");
-
-        try {
-            // p = new Joueur("faly");
-            // new Fenetre();
-            p.connectToServer();
-            p.newFeuille();
-            // csc = new ClientSideConnection();
-            p.start();
-            if(p.getId()== 1){
-                p.setTurn(true);
-            }
-        } catch (Exception e) {
-            // p.getCsc().closeConnection();
-        }
-
-        // p.setUpGUI();
-        // p.setUpButtons();
-        // p.startReceivingButtonNums();
-
     }
 
 }

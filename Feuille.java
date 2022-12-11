@@ -67,13 +67,13 @@ public class Feuille extends JPanel implements Runnable {
     public void init() {
         this.Points = new Point[X_NBR_CASES][Y_NBR_CASES];
         // joueurs = new Vector<>();
-        Joueur proprio = new Joueur("faly");
-        Joueur opponnent = new Joueur("toky");
-        proprio.setPointColor(new Color(45, 240, 255));
-        opponnent.setPointColor(new Color(255, 227, 10));
-        // joueurs.add(proprio);
-        // joueurs.add(opponnent);
-        haveTurn = proprio;
+        // Joueur proprio = new Joueur("faly");
+        // Joueur opponnent = new Joueur("toky");
+        // proprio.setPointColor(new Color(45, 240, 255));
+        // opponnent.setPointColor(new Color(255, 227, 10));
+        // // joueurs.add(proprio);
+        // // joueurs.add(opponnent);
+        // haveTurn = proprio;
     }
 
     public void pushTurn() {
@@ -355,7 +355,7 @@ public class Feuille extends JPanel implements Runnable {
         graph.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // graph.setStroke(new BasicStroke(5)); //line 5Px
+        graph.setStroke(new BasicStroke(1)); //line 5Px
         graph.setPaint(new Color(190, 190, 190)); // couleur
 
         for (int i = DIMENSION_CASE; i <= HEIGHT; i += DIMENSION_CASE) {

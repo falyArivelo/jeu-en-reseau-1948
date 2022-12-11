@@ -15,13 +15,11 @@ public class GameServer {
     int x;
     // int turn = 1;
 
-    public GameServer() {
+    public GameServer(int port) {
         System.out.println("----GAmeSErver-------");
         numPlayers = 0;
-        try
-
-        {
-            ss = new ServerSocket(1948);
+        try {
+            ss = new ServerSocket(port);
         } catch (Exception e) {
             System.err.println(e);
         }
@@ -81,8 +79,9 @@ public class GameServer {
                 while (true) {
                     if (playerId == 1) {
                         Point point = (Point) ois.readObject();
-                        // System.out.println("player 1 clicked button " + point.getX()+"-"+point.getY());
-                      
+                        // System.out.println("player 1 clicked button " +
+                        // point.getX()+"-"+point.getY());
+
                         Thread t = new Thread(new Runnable() {
                             public void run() {
                                 player2.sendCoord(point);
@@ -91,8 +90,9 @@ public class GameServer {
                         t.start();
                     } else {
                         Point point = (Point) ois.readObject();
-                        // System.out.println("player 2 clicked button " +  point.getX()+"-"+point.getY());
-                    
+                        // System.out.println("player 2 clicked button " +
+                        // point.getX()+"-"+point.getY());
+
                         Thread t = new Thread(new Runnable() {
                             public void run() {
                                 player1.sendCoord(point);
@@ -107,7 +107,7 @@ public class GameServer {
                     // }
                 }
             } catch (Exception e) {
-                System.out.println(e);
+                System.out.println("EN ATTENTE D'UN ADVERSAIRE");
             }
         }
 
@@ -122,11 +122,30 @@ public class GameServer {
                 System.out.println(e);
             }
         }
+
+    }
+
+    public void closeConnection() {
+        try {
+            // player1.getCsc().closeConnection();
+            // player2.getCsc().closeConnection();
+
+            ss.close();
+            System.out.println("connection closed----------");
+        } catch (Exception e) {
+            // System.out.println(e);
+        }
+
     }
 
     // ---------------------
-    public static void main(String[] args) {
-        GameServer gs = new GameServer();
-        gs.acceptConnections();
-    }
+    // public static void main(String[] args) {
+    //     GameServer gs = new GameServer();
+    //     try {
+    //         gs.acceptConnections();
+    //     } catch (Exception e) {
+    //         // gs.closeConnection();
+    //     }
+
+    // }
 }

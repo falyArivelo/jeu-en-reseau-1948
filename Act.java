@@ -18,9 +18,7 @@ public class Act implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == fenetre.getActualiser()) {
-            fenetre.getFeuille().actualiser();
-        }
+
     }
 
 
