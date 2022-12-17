@@ -201,6 +201,7 @@ public class Joueur extends JFrame implements Serializable {
     // ________________________________
 
     public static void main(String[] args) throws Exception {
+        com.formdev.flatlaf.FlatLightLaf.setup();
         Joueur p = new Joueur("faly");
         p.addMouseListener(new Clic(p));
 
