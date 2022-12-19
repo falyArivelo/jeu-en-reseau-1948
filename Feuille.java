@@ -30,12 +30,8 @@ public class Feuille extends JPanel implements Runnable {
     Joueur proprio;
     Joueur opponnent;
     int id;
-    // JLabel scoreP1;
-    // JLabel scoreP2;
-    Clic clic;
 
-    // GameClient socketClient;
-    // GameServer socketServer;
+    Clic clic;
 
     public Feuille() {
         init();
@@ -43,9 +39,6 @@ public class Feuille extends JPanel implements Runnable {
         setBackground(Color.BLACK);
         System.out.println(X_NBR_CASES);
         System.out.println(Y_NBR_CASES);
-        // start();
-        // socketClient.sendData("ping".getBytes());
-
     }
 
     @Override
@@ -54,34 +47,13 @@ public class Feuille extends JPanel implements Runnable {
 
     }
 
-    // public synchronized void start(){
-    // if(JOptionPane.showConfirmDialog(this,"Do you want tu run the server?")==0){
-    // socketServer = new GameServer(this);
-    // socketServer.start();
-    // }
-    // socketClient = new GameClient(this, "localhost");
-    // socketClient.start();
-
-    // }
 
     public void init() {
         this.Points = new Point[X_NBR_CASES][Y_NBR_CASES];
-        // joueurs = new Vector<>();
-        // Joueur proprio = new Joueur("faly");
-        // Joueur opponnent = new Joueur("toky");
-        // proprio.setPointColor(new Color(45, 240, 255));
-        // opponnent.setPointColor(new Color(255, 227, 10));
-        // // joueurs.add(proprio);
-        // // joueurs.add(opponnent);
-        // haveTurn = proprio;
+
     }
 
     public void pushTurn() {
-        // if (haveTurn.equals(this.getJoueurs().get(0))) {
-        // setHaveTurn(this.getJoueurs().get(1));
-        // } else {
-        // setHaveTurn(this.getJoueurs().get(0));
-        // }
     }
 
     public void drop(Point point) {
@@ -95,18 +67,10 @@ public class Feuille extends JPanel implements Runnable {
                 Graphics2D graph = (Graphics2D) g;
                 graph.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 graph.setColor(point.getColor());
-                // if (id == 1){
-                //     graph.setColor(Color.blue);
-                // }
-                // if (id == 2){
-                //     graph.setColor(Color.red);
-                // }
+
                 graph.fillOval(point.getXlocation() - (DIMENSION_POINT / 2),
                         point.getYlocation() - (DIMENSION_POINT / 2), DIMENSION_POINT,
                         DIMENSION_POINT);
-
-                // g.drawImage(boule, point.getXlocation() - (DIMENSION_POINT / 2),
-                // point.getYlocation() - (DIMENSION_POINT / 2), null);
 
                 point.setProprio(getHaveTurn());
                 for (int i = 1; i <= 2; i++) {
@@ -159,6 +123,13 @@ public class Feuille extends JPanel implements Runnable {
         }
         if (ok1 == 5) {
             trace(x1, y, x2, y);
+            if(id==this.getId()){
+                this.getProprio().getInfo().getTurn().setForeground(Color.BLUE);
+                this.getProprio().getInfo().getTurn().setText("YOU WIN");
+            }else{
+                this.getProprio().getInfo().getTurn().setForeground(Color.RED);
+                this.getProprio().getInfo().getTurn().setText("YOU LOSE");
+            }
             // joueur.addScore();
             ;
             int i = 0;
@@ -198,6 +169,13 @@ public class Feuille extends JPanel implements Runnable {
         }
         if (ok1 == 5) {
             trace(x1, y1, x2, y2);
+            if(id==this.getId()){
+                this.getProprio().getInfo().getTurn().setForeground(Color.BLUE);
+                this.getProprio().getInfo().getTurn().setText("YOU WIN");
+            }else{
+                this.getProprio().getInfo().getTurn().setForeground(Color.RED);
+                this.getProprio().getInfo().getTurn().setText("YOU LOSE");
+            }
             // joueur.addScore();
             ;
             for (int i = 0; i < 5; i++) {
@@ -228,6 +206,13 @@ public class Feuille extends JPanel implements Runnable {
         }
         if (ok1 == 5) {
             trace(x, y1, x, y2);
+            if(id==this.getId()){
+                this.getProprio().getInfo().getTurn().setForeground(Color.BLUE);
+                this.getProprio().getInfo().getTurn().setText("YOU WIN");
+            }else{
+                this.getProprio().getInfo().getTurn().setForeground(Color.RED);
+                this.getProprio().getInfo().getTurn().setText("YOU LOSE");
+            }
             // joueur.addScore();
             int i = 0;
             while (i < 5) {
@@ -267,6 +252,13 @@ public class Feuille extends JPanel implements Runnable {
         }
         if (ok1 == 5) {
             trace(x1, y1, x2, y2);
+            if(id==this.getId()){
+                this.getProprio().getInfo().getTurn().setForeground(Color.BLUE);
+                this.getProprio().getInfo().getTurn().setText("YOU WIN");
+            }else{
+                this.getProprio().getInfo().getTurn().setForeground(Color.RED);
+                this.getProprio().getInfo().getTurn().setText("YOU LOSE");
+            }
             // joueur.addScore();
             for (int i = 0; i < 5; i++) {
                 getPoints()[x1][y1].trace();
@@ -330,7 +322,6 @@ public class Feuille extends JPanel implements Runnable {
                 return false;
             }
         } catch (Exception e) {
-            // System.out.println(e);
 
         }
         return true;
@@ -341,10 +332,9 @@ public class Feuille extends JPanel implements Runnable {
         Graphics2D graph = (Graphics2D) g;
         graph.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-        // if (id == 1)
-        //     graph.setColor(Color.red);
-        // if (id == 2)
-        //     graph.setColor(Color.blue);
+
+            graph.setColor(new Color(255,0,208));
+        //
 
         ((Graphics2D) g).setStroke(new BasicStroke((float) (DIMENSION_CASE * 0.16)));
         graph.drawLine(x1 * DIMENSION_CASE, y1 * DIMENSION_CASE, x2 * DIMENSION_CASE, y2 * DIMENSION_CASE);
@@ -376,44 +366,16 @@ public class Feuille extends JPanel implements Runnable {
     }
 
     public void boucle() {
-        // while (true) {
+    
         for (Point[] points : getPoints()) {
             for (Point point : points) {
                 if (point != null)
                     drop(point);
             }
         }
-        // }
+        
     }
 
-    // public void paint(Graphics g) {
-    // // super.paint(g);
-    // try {
-    // Thread.sleep(17);
-    // } catch (Exception e) {
-    // }
-    // Graphics2D graph = (Graphics2D) g;
-    // graph.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-    // RenderingHints.VALUE_ANTIALIAS_ON);
-
-    // // graph.setStroke(new BasicStroke(5)); //line 5Px
-    // graph.setPaint(new Color(190, 190, 190)); // couleur
-
-    // for (int i = DIMENSION_CASE; i <= HEIGHT; i += DIMENSION_CASE) {
-    // graph.drawLine(0, i, WIDTH, i); // coordonées debut et fin
-    // }
-    // for (int i = DIMENSION_CASE; i <= WIDTH; i += DIMENSION_CASE) {
-    // graph.drawLine(i, 0, i, HEIGHT);
-    // }
-
-    // for (Point[] points : getPoints()) {
-    // for (Point point : points) {
-    // if (point != null)
-    // drop(point);
-    // }
-    // }
-    // // repaint();
-    // }
     public void setId(int id) {
         this.id = id;
     }
@@ -450,13 +412,6 @@ public class Feuille extends JPanel implements Runnable {
         Points = points;
     }
 
-    // public Vector<Joueur> getJoueurs() {
-    // return joueurs;
-    // }
-
-    // public void setJoueurs(Vector<Joueur> joueurs) {
-    // this.joueurs = joueurs;
-    // }
 
     public Clic getClic() {
         return clic;

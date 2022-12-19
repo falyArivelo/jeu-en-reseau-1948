@@ -33,6 +33,7 @@ public class Click implements ActionListener {
                 joueur.connectToServer("localhost", host_port);
                 if (joueur.getCsc().getSocket().isConnected() && !joueur.getCsc().getSocket().isClosed()) {
                     joueur.refresh(joueur.getFeuille());
+                    joueur.getFeuille().setProprio(joueur);
                 }
 
             } catch (Exception ex) {
@@ -55,11 +56,6 @@ public class Click implements ActionListener {
 
         }
 
-        // if(e.getSource() == joueur.getP2().getSideBar().getBack()){
-        // System.out.println("back");
-
-        // joueur.refresh(joueur.getP1());
-        // }
 
     }
 

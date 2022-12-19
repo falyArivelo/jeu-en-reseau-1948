@@ -13,7 +13,6 @@ public class Point  implements Serializable {
     Color color;
 
     public Point() {
-
     }
 
     public Point(int x, int y){

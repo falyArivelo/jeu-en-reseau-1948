@@ -2,6 +2,8 @@ package assets;
 
 import java.net.*;
 import java.io.*;
+import java.lang.ProcessHandle.Info;
+
 import javax.swing.*;
 import assets.Point;
 import listener.*;
@@ -11,6 +13,7 @@ import java.awt.*;
 public class Joueur extends JFrame implements Serializable {
     JPanel actuPanel;
     Feuille feuille;
+    Infos info;
     MyMenu menu;
     boolean tour;
     int score = 0;
@@ -19,7 +22,6 @@ public class Joueur extends JFrame implements Serializable {
     Color pointColor;
     boolean turn;
     boolean run;
-
     ClientSideConnection csc;
 
     public Joueur(String nom) {
@@ -31,17 +33,15 @@ public class Joueur extends JFrame implements Serializable {
         feuille = new Feuille();
         setFeuille(feuille);
         setActuPanel(menu);
-        this.add(getActuPanel());
-
-        this.setLayout(new FlowLayout());
+        this.add(getActuPanel(), BorderLayout.NORTH);
+        info = new Infos(this);
+        this.add(info, BorderLayout.SOUTH);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.pack();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setVisible(true);
-
         this.setFocusable(true);
-
     }
 
     public void refresh(JPanel next) {
@@ -51,18 +51,6 @@ public class Joueur extends JFrame implements Serializable {
         this.revalidate();
         this.repaint();
 
-    }
-
-    public void setActuPanel(JPanel actuPanel) {
-        this.actuPanel = actuPanel;
-    }
-
-    public JPanel getActuPanel() {
-        return actuPanel;
-    }
-
-    public MyMenu getMenu() {
-        return menu;
     }
 
     public void start() {
@@ -80,6 +68,11 @@ public class Joueur extends JFrame implements Serializable {
             public void run() {
                 csc.sendCoord(point);
                 setTurn(false);
+                if (!getTurn()) {
+                    getInfo().getTurn().setText("player 2 turn ");
+                }
+                getInfo().getScore().setText("score : "+ getScore());
+
             }
         });
         t.start();
@@ -93,14 +86,14 @@ public class Joueur extends JFrame implements Serializable {
         try {
             this.start();
         } catch (Exception e) {
-            // p.getCsc().closeConnection();
-            // p.run = false;
+
             System.out.println("tsy mety connecte");
         }
         if (this.getId() == 1) {
             this.setTurn(true);
         }
         this.setTitle("Player " + this.getId());
+        this.getFeuille().setId(this.getId());
 
         run = true;
     }
@@ -109,14 +102,10 @@ public class Joueur extends JFrame implements Serializable {
         while (true) {
             Point point = (Point) csc.receiveCoord();
             setTurn(true);
-
-            // if (id == 1)
-            // point.setColor(Color.blue);
-            // if (id == 2)
-            // point.setColor(Color.red);
-
-            // point.setProprio(oppo);
-            // System.out.println("your enemy clicked" + point.getX() + "-" + point.getY());
+            if (getTurn()) {
+                getInfo().getTurn().setText(" your turn ");
+            }
+            getInfo().getScore().setText("score : "+ getScore());
             Thread t = new Thread(new Runnable() {
                 public void run() {
                     System.out.println(getId());
@@ -146,7 +135,6 @@ public class Joueur extends JFrame implements Serializable {
                 dataOut = new DataOutputStream(socket.getOutputStream());
                 oos = new ObjectOutputStream(socket.getOutputStream());
                 ois = new ObjectInputStream(socket.getInputStream());
-                // Point point = (Point) ois.readObject();
                 id = dataIn.readInt();
                 System.out.println("connected to server as Player " + id + "");
             } catch (Exception e) {
@@ -156,10 +144,8 @@ public class Joueur extends JFrame implements Serializable {
         }
 
         public void sendCoord(Point point) {
-            // String coord = x + ";" + y;
             try {
-                // dataOut.write(coord);
-                // dataOut.flush();
+
 
                 oos.writeObject(point);
                 oos.flush();
@@ -169,13 +155,10 @@ public class Joueur extends JFrame implements Serializable {
         }
 
         public Point receiveCoord() {
-            // int n = -1;
             Point point = null;
             try {
-                // n = dataIn.readInt();
                 point = (Point) ois.readObject();
 
-                // System.out.println("player " + otherPlayer + "clicked button " + n);
             } catch (Exception e) {
                 System.out.println(e);
             }
@@ -188,7 +171,6 @@ public class Joueur extends JFrame implements Serializable {
                 socket.close();
                 System.out.println("connection closed----------");
             } catch (Exception e) {
-                // System.out.println(e);
             }
 
         }
@@ -196,7 +178,7 @@ public class Joueur extends JFrame implements Serializable {
         public Socket getSocket() {
             return socket;
         }
-        
+
     }
     // ________________________________
 
@@ -274,6 +256,26 @@ public class Joueur extends JFrame implements Serializable {
 
     public Color getPointColor() {
         return pointColor;
+    }
+
+    public void setActuPanel(JPanel actuPanel) {
+        this.actuPanel = actuPanel;
+    }
+
+    public JPanel getActuPanel() {
+        return actuPanel;
+    }
+
+    public MyMenu getMenu() {
+        return menu;
+    }
+
+    public Infos getInfo() {
+        return info;
+    }
+
+    public void setInfo(Infos info) {
+        this.info = info;
     }
 
 }

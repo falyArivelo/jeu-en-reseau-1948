@@ -13,7 +13,7 @@ public class GameServer {
     Joueur j1;
     Joueur j2;
     int x;
-    // int turn = 1;
+    
 
     public GameServer(int port) {
         System.out.println("----GAmeSErver-------");
@@ -40,7 +40,6 @@ public class GameServer {
                 }
                 Thread t = new Thread(ssc);
                 t.start();
-
             }
             System.out.println("we now have 2 players no longer acepped");
         } catch (Exception e) {
@@ -49,7 +48,7 @@ public class GameServer {
     }
 
     // ---------------------
-    public class ServerSideConnection implements Runnable {
+    private class ServerSideConnection implements Runnable {
         Socket socket;
         DataInputStream dataIn;
         DataOutputStream dataOut;
@@ -79,8 +78,6 @@ public class GameServer {
                 while (true) {
                     if (playerId == 1) {
                         Point point = (Point) ois.readObject();
-                        // System.out.println("player 1 clicked button " +
-                        // point.getX()+"-"+point.getY());
 
                         Thread t = new Thread(new Runnable() {
                             public void run() {
@@ -90,8 +87,6 @@ public class GameServer {
                         t.start();
                     } else {
                         Point point = (Point) ois.readObject();
-                        // System.out.println("player 2 clicked button " +
-                        // point.getX()+"-"+point.getY());
 
                         Thread t = new Thread(new Runnable() {
                             public void run() {
@@ -101,10 +96,6 @@ public class GameServer {
                         t.start();
 
                     }
-                    // if (turnsMade == maxTurns) {
-                    // System.out.println("maxturn has been reached");
-                    // break;
-                    // }
                 }
             } catch (Exception e) {
                 System.out.println("EN ATTENTE D'UN ADVERSAIRE");
@@ -112,10 +103,9 @@ public class GameServer {
         }
 
         public void sendCoord(Point point) {
-            // String coord = x + ";" + y;
+
             try {
-                // dataOut.write(coord);
-                // dataOut.flush();
+      
                 oos.writeObject(point);
                 oos.flush();
             } catch (Exception e) {
@@ -127,25 +117,11 @@ public class GameServer {
 
     public void closeConnection() {
         try {
-            // player1.getCsc().closeConnection();
-            // player2.getCsc().closeConnection();
-
             ss.close();
             System.out.println("connection closed----------");
         } catch (Exception e) {
-            // System.out.println(e);
         }
 
     }
 
-    // ---------------------
-    // public static void main(String[] args) {
-    //     GameServer gs = new GameServer();
-    //     try {
-    //         gs.acceptConnections();
-    //     } catch (Exception e) {
-    //         // gs.closeConnection();
-    //     }
-
-    // }
 }
